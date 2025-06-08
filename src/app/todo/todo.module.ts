@@ -7,17 +7,16 @@ import { TodoComponent } from './todo.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 import { NewTaskComponent } from './new-task/new-task.component';
 
-
 @NgModule({
   declarations: [
     TodoComponent,
     TodoItemComponent,
-    NewTaskComponent,
+    NewTaskComponent
   ],
   imports: [
     CommonModule,
     TodoRoutingModule,
-    FormsModule,
+    FormsModule
   ]
 })
 export class TodoModule { }

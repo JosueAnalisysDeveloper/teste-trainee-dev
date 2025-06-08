@@ -7,12 +7,12 @@ import { HeaderComponent } from './layout/header/header.component';
 
 @NgModule({
   declarations: [
-    HeaderComponent,
-    AppComponent
+  AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HeaderComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
