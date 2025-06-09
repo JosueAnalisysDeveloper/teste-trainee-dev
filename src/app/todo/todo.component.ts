@@ -11,6 +11,7 @@ export class TodoComponent implements OnInit {
   todos: Todo[] = [];
   showCompletedTasks: boolean = true;
   todoToEdit: Todo | null = null;
+  isAlphabeticallySorted: boolean = false;
 
   constructor(private todoService: TodoService) { }
 
@@ -21,6 +22,9 @@ export class TodoComponent implements OnInit {
   loadTodos() {
     this.todoService.getTodos().subscribe(todos => {
       this.todos = todos;
+      if (this.isAlphabeticallySorted) {
+        this.sortAlphabetically();
+      }
     });
   }
 
@@ -52,7 +56,7 @@ export class TodoComponent implements OnInit {
   clearCompletedTasks() {
     if (this.todos.length > 0 && confirm('Você Deseja apagar as tarefas concluidas?')) {
       this.todoService.clearCompletedTasks();
-    this.loadTodos();
+      this.loadTodos();
     }
   }
    
@@ -70,7 +74,33 @@ export class TodoComponent implements OnInit {
     this.todoToEdit = todo;
   }
 
-  get labelClearAll(){
+  get labelClearAll() {
     return 'Limpar Todos'
+  }
+
+  sortAlphabetically() {
+    this.isAlphabeticallySorted = !this.isAlphabeticallySorted;
+    
+    if (this.isAlphabeticallySorted) {
+      // Ordenação alfabética
+      this.todos.sort((a, b) => {
+        // Primeiro ordena por status de conclusão
+        if (a.completed !== b.completed) {
+          return a.completed ? 1 : -1;
+        }
+        // Depois ordena alfabeticamente
+        return a.title.localeCompare(b.title, 'pt-BR', { sensitivity: 'base' });
+      });
+    } else {
+      // Volta para a ordenação original (por ID)
+      this.todos.sort((a, b) => {
+        // Primeiro ordena por status de conclusão
+        if (a.completed !== b.completed) {
+          return a.completed ? 1 : -1;
+        }
+        // Depois ordena por ID (ordem de criação)
+        return a.id - b.id;
+      });
+    }
   }
 }
