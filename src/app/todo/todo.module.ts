@@ -10,13 +10,13 @@ import { NewTaskComponent } from './new-task/new-task.component';
 @NgModule({
   declarations: [
     TodoComponent,
-    TodoItemComponent,
     NewTaskComponent
   ],
   imports: [
     CommonModule,
     TodoRoutingModule,
-    FormsModule
+    FormsModule,
+    TodoItemComponent
   ]
 })
 export class TodoModule { }
