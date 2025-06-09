@@ -1,28 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Todo } from '../../shared/models/todo.model';
-import { TodoService } from 'src/app/shared/services/todo.service';
+import { TodoService } from '../../shared/services/todo.service';
 
 @Component({
   selector: 'app-new-task',
   templateUrl: './new-task.component.html',
   styleUrls: ['./new-task.component.css']
 })
-export class NewTaskComponent {
+export class NewTaskComponent implements OnChanges {
   newTaskTitle: string = '';
+  editingTodo: Todo | null = null;
 
-  constructor(private todoService: TodoService) { }
+  constructor(private todoService: TodoService) {}
 
-  count = 0;
+  @Input() set todoToEdit(todo: Todo | null) {
+    if (todo) {
+      this.editingTodo = todo;
+      this.newTaskTitle = todo.title;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['todoToEdit']) {
+      const todo = changes['todoToEdit'].currentValue;
+      if (todo) {
+        this.editingTodo = todo;
+        this.newTaskTitle = todo.title;
+      }
+    }
+  }
+
   addTask() {
-    if(this.count > 0) return
-    const newTodo: Todo = {
-      id: this.todoService.getTodoNewId(),
-      title: this.newTaskTitle,
-      completed: false
-    };
+    if (!this.newTaskTitle.trim()) return;
 
-    this.todoService.addTodo(newTodo);
+    if (this.editingTodo) {
+      // Atualizar tarefa existente
+      this.editingTodo.title = this.newTaskTitle;
+      this.todoService.updateTodo(this.editingTodo);
+      this.editingTodo = null;
+    } else {
+      // Criar nova tarefa
+      const newTodo: Todo = {
+        id: this.todoService.getTodoNewId(),
+        title: this.newTaskTitle,
+        completed: false
+      };
+      this.todoService.addTodo(newTodo);
+    }
+
     this.newTaskTitle = '';
-    
   }
 }
