@@ -31,29 +31,36 @@ export class NewTaskComponent implements OnChanges {
   }
 
   addTask() {
-    // Remove espaços em branco no início e fim do texto
-    const trimmedTitle = this.newTaskTitle.trim();
-    
-    // Verifica se o título está vazio ou contém apenas espaços
-    if (!trimmedTitle || !trimmedTitle.replace(/\s+/g, '')) {
-      alert('Por favor, digite um título válido para a tarefa.');
-      this.newTaskTitle = '';
-      return;
-    }
-
     if (this.editingTodo) {
-      // Atualizar tarefa existente
+      // Modo de edição - comportamento normal
+      const trimmedTitle = this.newTaskTitle.trim();
+      if (!trimmedTitle || !trimmedTitle.replace(/\s+/g, '')) {
+        alert('Por favor, digite um título válido para a tarefa.');
+        this.newTaskTitle = '';
+        return;
+      }
       this.editingTodo.title = trimmedTitle;
       this.todoService.updateTodo(this.editingTodo);
       this.editingTodo = null;
     } else {
-      // Criar nova tarefa
-      const newTodo: Todo = {
-        id: this.todoService.getTodoNewId(),
-        title: trimmedTitle,
-        completed: false
-      };
-      this.todoService.addTodo(newTodo);
+      // Modo de adição - processa múltiplas tarefas
+      const tasks = this.newTaskTitle.split('|').map(task => task.trim());
+      const validTasks = tasks.filter(task => task && task.replace(/\s+/g, ''));
+
+      if (validTasks.length === 0) {
+        alert('Por favor, digite pelo menos uma tarefa válida.');
+        this.newTaskTitle = '';
+        return;
+      }
+
+      validTasks.forEach(taskTitle => {
+        const newTodo: Todo = {
+          id: this.todoService.getTodoNewId(),
+          title: taskTitle,
+          completed: false
+        };
+        this.todoService.addTodo(newTodo);
+      });
     }
 
     this.newTaskTitle = '';
