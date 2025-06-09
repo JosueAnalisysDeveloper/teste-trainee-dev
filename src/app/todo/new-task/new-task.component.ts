@@ -34,9 +34,10 @@ export class NewTaskComponent implements OnChanges {
     // Remove espaços em branco no início e fim do texto
     const trimmedTitle = this.newTaskTitle.trim();
     
-    // Verifica se o título está vazio após remover os espaços
-    if (!trimmedTitle) {
-      alert('Por favor, digite um título para a tarefa.');
+    // Verifica se o título está vazio ou contém apenas espaços
+    if (!trimmedTitle || !trimmedTitle.replace(/\s+/g, '')) {
+      alert('Por favor, digite um título válido para a tarefa.');
+      this.newTaskTitle = '';
       return;
     }
 
