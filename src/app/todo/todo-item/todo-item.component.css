@@ -1,13 +1,16 @@
 .todo-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
 }
 
 .todo-item_content {
   display: flex;
   align-items: baseline;
-  gap: rem;
+  gap: 1rem;
   margin-right: 1rem;
+  flex: 1;
 }
 
 .todo-item_content label {
@@ -27,21 +30,34 @@
   text-decoration: line-through;
 }
 
-.todo-item_edit{
-  color: blue;
-  width: 10px;
-  width: fit-content;
+.todo-item_buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
-.todo-item_delete {
-  width: 10px;
+
+.todo-item_edit {
+  color: blue;
   width: fit-content;
-  color: red;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 0.5rem;
 }
 
+.todo-item_delete {
+  width: fit-content;
+  color: rgb(182, 12, 12);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
 
 .fa-trash-alt:hover {
   color: rgba(65, 63, 63, 0.62);
+}
+
+.fa-edit:hover {
+  color: rgba(0, 0, 255, 0.62);
 }
