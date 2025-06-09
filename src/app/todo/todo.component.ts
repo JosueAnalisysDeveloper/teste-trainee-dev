@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../shared/models/todo.model';
 import { TodoService } from '../shared/services/todo.service';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-todo',
@@ -102,5 +103,71 @@ export class TodoComponent implements OnInit {
         return a.id - b.id;
       });
     }
+  }
+
+  exportToPDF() {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    let y = 20;
+
+    // Título
+    doc.setFontSize(20);
+    doc.text('Lista de Tarefas', pageWidth / 2, y, { align: 'center' });
+    y += 20;
+
+    // Data e hora
+    doc.setFontSize(12);
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('pt-BR');
+    const timeStr = now.toLocaleTimeString('pt-BR');
+    doc.text(`Gerado em: ${dateStr} às ${timeStr}`, pageWidth / 2, y, { align: 'center' });
+    y += 20;
+
+    // Tarefas não concluídas
+    doc.setFontSize(16);
+    doc.text('Tarefas Pendentes:', margin, y);
+    y += 10;
+
+    doc.setFontSize(12);
+    const pendingTasks = this.todos.filter(todo => !todo.completed);
+    if (pendingTasks.length === 0) {
+      doc.text('Nenhuma tarefa pendente', margin, y);
+      y += 10;
+    } else {
+      pendingTasks.forEach(todo => {
+        if (y > doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage();
+          y = margin;
+        }
+        doc.text(`• ${todo.title}`, margin, y);
+        y += 10;
+      });
+    }
+
+    y += 10;
+
+    // Tarefas concluídas
+    doc.setFontSize(16);
+    doc.text('Tarefas Concluídas:', margin, y);
+    y += 10;
+
+    doc.setFontSize(12);
+    const completedTasks = this.todos.filter(todo => todo.completed);
+    if (completedTasks.length === 0) {
+      doc.text('Nenhuma tarefa concluída', margin, y);
+    } else {
+      completedTasks.forEach(todo => {
+        if (y > doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage();
+          y = margin;
+        }
+        doc.text(`• ${todo.title}`, margin, y);
+        y += 10;
+      });
+    }
+
+    // Salvar o PDF
+    doc.save('lista-de-tarefas.pdf');
   }
 }
