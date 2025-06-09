@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Todo } from '../../shared/models/todo.model';
 import { TodoService } from '../../shared/services/todo.service';
+import { ProfanityFilterService } from '../../shared/services/profanity-filter.service';
 
 @Component({
   selector: 'app-new-task',
@@ -11,7 +12,10 @@ export class NewTaskComponent implements OnChanges {
   newTaskTitle: string = '';
   editingTodo: Todo | null = null;
 
-  constructor(private todoService: TodoService) {}
+  constructor(
+    private todoService: TodoService,
+    private profanityFilter: ProfanityFilterService
+  ) {}
 
   @Input() set todoToEdit(todo: Todo | null) {
     if (todo) {
@@ -30,12 +34,25 @@ export class NewTaskComponent implements OnChanges {
     }
   }
 
+  private validateTaskTitle(title: string): boolean {
+    if (!title || !title.replace(/\s+/g, '')) {
+      alert('Por favor, digite um título válido para a tarefa.');
+      return false;
+    }
+
+    if (this.profanityFilter.containsProfanity(title)) {
+      alert('Não é permitido cadastrar tarefas com palavras obscenas.');
+      return false;
+    }
+
+    return true;
+  }
+
   addTask() {
     if (this.editingTodo) {
       // Modo de edição - comportamento normal
       const trimmedTitle = this.newTaskTitle.trim();
-      if (!trimmedTitle || !trimmedTitle.replace(/\s+/g, '')) {
-        alert('Por favor, digite um título válido para a tarefa.');
+      if (!this.validateTaskTitle(trimmedTitle)) {
         this.newTaskTitle = '';
         return;
       }
@@ -45,10 +62,9 @@ export class NewTaskComponent implements OnChanges {
     } else {
       // Modo de adição - processa múltiplas tarefas
       const tasks = this.newTaskTitle.split('|').map(task => task.trim());
-      const validTasks = tasks.filter(task => task && task.replace(/\s+/g, ''));
+      const validTasks = tasks.filter(task => this.validateTaskTitle(task));
 
       if (validTasks.length === 0) {
-        alert('Por favor, digite pelo menos uma tarefa válida.');
         this.newTaskTitle = '';
         return;
       }
