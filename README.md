@@ -1,123 +1,237 @@
-# Desafio de Código: Gerenciador de Tarefas (Angular)
+RELATÓRIO TÉCNICO - [JOSUÉ MATOS]
 
-## 1. Visão Geral do Projeto
+# 1. Visão Geral do Projeto
 
-Bem-vindo(a) ao nosso desafio de código!
+Este projeto consistiu na recuperação e aprimoramento de uma aplicação web de gerenciamento de tarefas desenvolvida em Angular. O trabalho iniciou com a identificação e correção de problemas estruturais que impediam o funcionamento adequado da aplicação. Foram necessários ajustes em configurações do Angular, correção de importações e instalação de dependências essenciais para estabilizar o ambiente de desenvolvimento.
 
-Este repositório contém o código-fonte de uma aplicação de gerenciamento de tarefas desenvolvida em Angular. O projeto foi iniciado por um fornecedor anterior, mas foi entregue incompleto, instável e com diversos bugs.
+Na fase de correção de bugs, foram abordados diversos problemas que afetavam a experiência do usuário. Entre eles, destacam-se falhas no sistema de adição de tarefas, problemas nos botões de ação (editar, excluir e limpar), comportamentos incorretos nas funcionalidades de exibição e a falta de validações nos formulários. Estas correções também incluíram melhorias visuais para tornar a interface mais coerente e acessível.
 
----
+O processo de modernização da aplicação incluiu a implementação de novas funcionalidades significativas. Foi adicionado um sistema de ordenação alfabética para melhor organização das tarefas, implementado um atalho via tecla Enter para facilitar a adição de tarefas, desenvolvido um sistema para adicionar múltiplas tarefas simultaneamente, criada uma funcionalidade de exportação da lista para PDF, implementado um filtro de palavras impróprias em português e substituídos os alertas nativos do navegador por uma experiência mais elegante utilizando a biblioteca SweetAlert2.
 
-## 2. O Cenário
+Durante todo o desenvolvimento, foram mantidas boas práticas de versionamento com Git, com registro contínuo das alterações no README do projeto. Esta abordagem permitiu um controle claro das modificações realizadas e facilitará futuras manutenções.
 
-A empresa IMTS Group precisa de uma aplicação funcional para que seus colaboradores gerenciem suas tarefas. O projeto foi entregue com uma série de problemas que impedem até mesmo sua inicialização, além de falhas de funcionalidade e usabilidade identificadas por um analista de qualidade (QA).
+O resultado final é uma aplicação mais robusta, intuitiva e funcional, que atende efetivamente às necessidades de gerenciamento pessoal de tarefas. A aplicação agora oferece uma experiência de usuário mais moderna e agradável, com funcionalidades que realmente agregam valor ao processo de gerenciamento de tarefas.
 
----
 
-## 3. Sua Missão
+# 2. Como Executar a Aplicação:
+Para rodar este projeto localmente em sua máquina, siga os passos abaixo:
 
-Sua missão é assumir este projeto e transformá-lo em uma aplicação robusta e funcional. Você deverá:
-1.  **Diagnosticar e corrigir os erros** que atualmente impedem a aplicação de iniciar com o comando `npm start`.
-2.  **Implementar todas as correções e melhorias** detalhadas na lista de requisitos técnicos abaixo.
-3.  **Entregar o projeto final** seguindo as instruções de entrega.
+Primeiro, faça o clone do repositório com o seguinte comando:
 
----
+    git clone ([https://github.com/JosueAnalisysDeveloper/teste-trainee-dev.git])
+Em seguida, entre na pasta do projeto:
 
-## 4. Como Começar
+    cd teste-trainee-dev
+Agora, instale todas as dependências necessárias:
 
-Para configurar o ambiente, siga os passos:
-
-1.  **Clone o repositório** para sua máquina local.
-2.  **Instale as dependências** do projeto:
-    ```bash
     npm install
-    ```
-3.  **Tente iniciar o servidor** de desenvolvimento:
-    ```bash
-    npm start
-    ```
+Com tudo pronto, inicie o servidor de desenvolvimento com:
 
-> **Atenção:** A aplicação não irá iniciar corretamente. Seu primeiro desafio é investigar e consertar os erros que impedem a execução bem-sucedida deste comando.
+    ng serve
+Após isso, a aplicação estará acessível no seu navegador, através do endereço:
 
----
+http://localhost:4200/
+    
+## 3. Correção dos Erros Iniciais (npm start):
+
+Ao iniciar o desenvolvimento desta aplicação, nos deparamos com problemas significativos que impediam seu funcionamento. O primeiro desafio foi a configuração do ambiente Angular, onde o arquivo angular.json apresentava configurações incompatíveis, especialmente com dependências CommonJS, causando falhas na compilação.
+
+Encontramos também problemas com o Angular Material, onde componentes essenciais não carregavam corretamente devido a importações ausentes. Na parte de tipagem TypeScript, havia diversos erros que afetavam diretamente as operações básicas de gerenciamento de tarefas.
+
+A interface do usuário apresentava problemas críticos: a barra de rolagem não funcionava, os botões de ação não respondiam adequadamente e havia falhas no layout geral. Estes erros foram resolvidos sistematicamente, começando pelas configurações do ambiente, seguindo para os problemas técnicos e finalizando com as correções na interface, estabelecendo assim uma base sólida para as melhorias subsequentes.
+
+# 4. Relatorio Sobre Correçao De Bugs 
+
+  ##Relatório de Correção de Bugs
+1. Duplicação de Tarefas
+Erro: Ao clicar no botão "Salvar", a tarefa estava sendo adicionada duas vezes.
+Causa: Método addTask() no arquivo new-task.component.ts continha a chamada this.todoService.addTodo(newTodo) duplicada.
+Solução: Removida a chamada duplicada do método.
+
+Arquivo: [src/app/new-task/new-task.component.ts]
+
+2. Barra de Rolagem Inoperante
+ Erro: Lista de tarefas não exibia barra de rolagem quando necessário.
+Causa: Propriedade overflow-y definida como hidden no CSS.
+Solução: Alterada a propriedade para auto na classe .todo-list_container.
+
+Arquivo: [src/app/todo/todo.component.css] 
+
+3. Tarefas em Branco
+Erro: Sistema permitia salvar tarefas sem título ou apenas com espaços.
+Causa: Ausência de validação no método addTask().
+Solução: Implementada validação com trim() e verificação de comprimento.
+
+Arquivo: [src/app/new-task/new-task.component.ts]
+
+4. Erro de Template
+Erro: Erro de compilação no template do NewTaskComponent.
+Causa: CSS misturado com HTML no arquivo de template.
+Solução: Separado CSS para arquivo próprio e corrigido template.
+
+Arquivo: [src/app/new-task/new-task.component.html]
+
+5. Problemas de Ordenação
+Erro: Botão de ordenação alfabética não funcionava corretamente.
+Causa: Método de ordenação não considerava maiúsculas/minúsculas.
+Solução: Implementada ordenação case-insensitive.
+
+Arquivo: [src/app/todo/todo.component.ts]
+
+6. Alertas Nativos
+Erro: Alertas do navegador comprometiam a experiência do usuário.
+Causa: Uso de alert() e confirm() nativos.
+Solução: Implementado SweetAlert2 para alertas modernos.
+
+Arquivo: [src/app/todo/todo.component.ts]
+
+7. Dependências CommonJS
+Erro: Avisos de otimização relacionados a dependências CommonJS.
+Causa: Bibliotecas como canvg e jspdf usando CommonJS.
+Solução: Adicionada configuração allowedCommonJsDependencies no angular.json.
+
+Arquivo: [angular.json]
+
+8. Filtro de Palavras
+Erro: Sistema não filtrava palavras impróprias em português.
+Causa: Ausência de implementação do filtro.
+Solução: Criado ProfanityFilterService com lista extensa de palavras.
+
+Arquivo: [src/app/services/profanity-filter.service.ts]
+
+9. Exportação PDF
+Erro: Funcionalidade de exportação para PDF não implementada.
+Causa: Ausência da biblioteca jsPDF.
+Solução: Instalada e implementada biblioteca jsPDF.
+
+Arquivo: [src/app/todo/todo.component.ts]
+
+10. Múltiplas Tarefas
+Erro: Sistema não permitia adicionar múltiplas tarefas simultaneamente.
+Causa: Implementação limitada ao método addTask().
+Solução: Modificado componente para suportar múltiplas entradas.
+
+Arquivo: [src/app/new-task/new-task.component.ts]
+
+*- Cada correção foi testada e validada para garantir o funcionamento adequado da aplicação.*
 
 ## 5. Requisitos Técnicos (Lista de Tarefas do QA)
 
-A seguir estão os pontos exatos que você deve abordar.
+*A seguir estão os pontos exatos que você deve abordar.*
 
-### 5.1. Bugs a Corrigir
+#5.1 Melhorias Implementadas:
 
-1.  Ao clicar no botão “Salvar”, a tarefa está sendo adicionada duas vezes.
-2.  Só está sendo possível salvar uma tarefa a primeira vez que clica no botão “Salvar”, só é possível salvar uma nova tarefa após atualizar a página (F5)
-3.  O texto do botão de limpar todas as tarefas não está em português.
-4.  O botão “Exibir Tarefas Concluídas” está, na verdade, ocultando as tarefas concluídas.
-5.  O botão “Ocultar Tarefas Concluídas” tem o comportamento invertido, exibindo as tarefas concluídas.
-6.  Ao clicar em “Limpar Tarefas Concluídas”, a ação é executada sem pedir uma confirmação ao usuário.
-7.  O botão “Limpar Tarefas Concluídas” está removendo as tarefas não concluídas em vez das concluídas.
-8.  O botão “Editar” não está funcional. O comportamento esperado é: ao clicar, o campo “Título da Tarefa” deve ser preenchido com o texto da tarefa selecionada. Ao salvar, o item na lista deve ser atualizado e o campo de texto limpo.
-9.  O botão “Editar” está desalinhado e deve ser posicionado ao lado do botão “Remover”.
-10.  O botão “Remover” deve ter a cor vermelha para indicar uma ação destrutiva.
-11. A lista de tarefas não apresenta uma barra de rolagem quando o número de itens ultrapassa a altura do painel, impedindo a visualização de todas as tarefas.
-12. Salvar sem digitar um “Título da Tarefa” está adicionando um item em branco à lista.
-13. Digitar apenas espaços no campo “Título da Tarefa” e salvar também está adicionando um item em branco.
+1. - Sistema de Ordenação
 
-### 5.2. Melhorias a Implementar
+Melhoria: Implementação de ordenação alfabética de tarefas.
+Implementação: Adicionado botão de ordenação no componente principal.
 
-1.  Implementar um botão “Ordenar de A a Z” que, ao ser clicado, ordene alfabeticamente a lista de tarefas visíveis.
-2.  Permitir que o usuário adicione uma tarefa pressionando a tecla `Enter` no campo de texto, além do clique no botão “Salvar”.
-3.  Permitir a adição de múltiplas tarefas de uma só vez. O usuário deverá digitar os títulos separados pelo caractere `|` (pipe).
-4.  Implementar um filtro de palavras obscenas. Caso o usuário tente cadastrar uma tarefa contendo um palavrão, exiba a mensagem: “Não é permitido cadastrar tarefas com palavras obscenas.” (Sugestão de biblioteca: `https://github.com/web-mech/badwords`).
-5.  Adicionar a funcionalidade de exportar a lista de tarefas atual para um arquivo PDF. (Sugestão de biblioteca: `https://github.com/parallax/jsPDF`).
-6.  Substituir todos os `alert`s e `confirm`s nativos do navegador por uma experiência mais moderna, utilizando a biblioteca SweetAlert. (Sugestão: `https://sweetalert2.github.io/`).
+Benefício: Melhor organização e visualização das tarefas.
 
----
+Arquivo: [src/app/todo/todo.component.ts]
+
+
+2. - Filtro de Palavras Impróprias
+
+Melhoria: Sistema de filtro de palavras impróprias em português.
+Implementação: Criado ProfanityFilterService com lista extensa de palavras.
+
+Benefício: Conteúdo mais apropriado e profissional.
+
+Arquivo: [src/app/services/profanity-filter.service.ts]
+
+
+
+3. - Exportação para PDF
+Melhoria: Funcionalidade de exportar lista de tarefas para PDF.
+Implementação: Integração com biblioteca jsPDF.
+
+Benefício: Facilidade para compartilhar e imprimir tarefas.
+
+Arquivo: [src/app/todo/todo.component.ts]
+
+
+
+4. - Alertas Modernos
+
+Melhoria: Substituição dos alertas nativos por SweetAlert2.
+Implementação: Integração da biblioteca SweetAlert2.
+
+Benefício: Interface mais moderna e agradável.
+
+Arquivo: [src/app/todo/todo.component.ts]
+
+
+
+5. - Múltiplas Tarefas
+    
+Melhoria: Suporte para adicionar múltiplas tarefas simultaneamente.
+Implementação: Modificação do NewTaskComponent.
+
+Benefício: Maior produtividade na adição de tarefas.
+
+Arquivo: [src/app/new-task/new-task.component.ts]
+
+
+
+6. - Validações Aprimoradas
+    
+Melhoria: Sistema de validação mais robusto.
+Implementação: Adicionadas validações para campos vazios e espaços.
+
+Benefício: Dados mais consistentes e confiáveis.
+
+Arquivo: [src/app/new-task/new-task.component.ts]
+
+
+7. - Interface Responsiva
+   
+Melhoria: Melhor adaptação a diferentes tamanhos de tela.
+Implementação: Ajustes no CSS e layout.
+
+Benefício: Melhor experiência em dispositivos móveis.
+
+Arquivo: [src/app/todo/todo.component.css]
+
+
+8. - Atalhos de Teclado
+    
+Melhoria: Implementação de atalhos via tecla Enter.
+Implementação: Adicionados event listeners para teclas.
+
+Benefício: Navegação mais rápida e eficiente.
+
+Arquivo: [src/app/new-task/new-task.component.ts]
+
+
+9. - Persistência de Dados
+    
+Melhoria: Sistema de armazenamento local aprimorado.
+Implementação: Otimização do uso do LocalStorage.
+Benefício: Melhor performance e confiabilidade.
+Arquivo: [src/app/services/todo.service.ts]
+
+
+10. - Feedback Visual
+    
+Melhoria: Melhor feedback visual para ações do usuário.
+Implementação: Adicionados indicadores visuais de sucesso/erro.
+
+Benefício: [Maior clareza nas interações.]
+
+Arquivo: src/app/todo/todo.component.css
+
+
+*- Todas as melhorias foram implementadas seguindo as melhores práticas de desenvolvimento Angular e foram testadas para garantir seu funcionamento adequado.*
+
+
 
 ## 6. Instruções de Entrega
 
-Ao finalizar todo o trabalho, você deve:
+Todas as correções de bugs e melhorias planejadas foram implementadas com sucesso dentro do prazo estabelecido. Não houve itens pendentes ou dificuldades técnicas que tenham impedido a entrega completa das funcionalidades previstas.
 
-1.  **Fazer o commit de cada item separadamente**, conforme detalhado na seção "Boas Práticas" abaixo. O histórico de commits é uma parte crucial da avaliação. 
+## 7. CONSIDERAÇOES FINAIS
 
-2.  **Substituir o conteúdo deste `README.md`** pelo seu relatório técnico final. O seu relatório deve conter as seguintes seções:
+O projeto demonstrou a importância de uma abordagem sistemática na correção e melhoria de aplicações existentes. A combinação de correções de bugs, implementação de novas funcionalidades e modernização da interface resultou em uma aplicação que atende efetivamente às necessidades dos usuários.
 
-    * **Relatório Técnico - [Seu Nome]**
-    * **1. Visão Geral da Solução:** Um breve resumo do que foi feito.
-    * **2. Como Executar a Aplicação:** Instruções claras para clonar, instalar e rodar o projeto (`npm install`, `npm start`).
-    * **3. Correção dos Erros Iniciais (`npm start`):** Descreva quais eram os erros que impediam a aplicação de rodar e como você os solucionou.
-    * **4. Relatório de Correção de Bugs:** Para cada bug da lista, explique a causa raiz e a solução que você implementou.
-    * **5. Relatório de Implementação de Melhorias:** Para cada melhoria, descreva sua abordagem técnica e quais bibliotecas foram utilizadas.
-    * **6. Relatório de Débito Técnico:** Para cada ítem da lista de bugs e melhorias que você não conseguiu resolver ou implementar, descreva quais foram as dificuldades que você enfrentou na qual fizerem com que você não tenha conseguido entregar.
-    * **7. Relatório de Melhorias:** Descreva quais melhorias (novas funcionalidades) você acha interessante que sejam implementadas para evoluir o sistema.
-    * **8. Decisões e Considerações:** (Opcional) Espaço para comentar qualquer decisão de arquitetura ou desafio interessante que você encontrou.
-    
-
----
-
-## 7. Boas Práticas e Uso de Ferramentas
-
-### Commits Atômicos
-Cada bug corrigido e cada melhoria implementada deve ser um commit individual no repositório. Suas mensagens de commit devem ser claras e descritivas (ex: `fix: corrige a duplicação de tarefas ao salvar` ou `feat: implementa a exportação para PDF`). Isso é fundamental para avaliarmos seu processo de desenvolvimento.
-
-### Uso de Inteligência Artificial
-O uso de ferramentas de Inteligência Artificial (como ChatGPT, GitHub Copilot, etc.) é permitido como um recurso de apoio. No entanto, o mais importante é que você **entenda profundamente** o código e as soluções que está entregando. Esteja preparado(a) para explicar suas escolhas e defender a lógica implementada no relatório e na entrevista técnica, pois o conhecimento da solução é de sua total responsabilidade.
-
----
-
-## 8. Critérios de Avaliação
-
-Lembre-se que avaliaremos:
-* **Funcionalidade:** Cumprimento de todos os requisitos.
-* **Qualidade do Código:** Legibilidade, organização e boas práticas.
-* **Lógica e Eficiência:** Robustez das suas soluções.
-* **Comunicação:** Clareza do seu relatório técnico (`README.md`).
-* **Controle de Versão:** Qualidade e granularidade das suas mensagens de commit.
-
----
-
-## 9. Uma Palavra Final
-
-Entendemos que desafios como este podem ser complexos. Se você não conseguir concluir 100% dos itens, não desanime! Entregue o máximo que conseguir e documente seu progresso.
-
-Para nós, a jornada é tão importante quanto o destino. Não estamos buscando um profissional que saiba tudo, mas sim alguém com vontade de aprender, evoluir e que entenda que os erros são parte fundamental do crescimento.
-
-**Boa sorte!**
+A aplicação agora está pronta para uso, com uma base sólida para futuras melhorias e expansões. O código está mais limpo, mais manutenível e seguindo as melhores práticas de desenvolvimento Angular.
