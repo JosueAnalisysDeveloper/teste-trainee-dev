@@ -31,18 +31,25 @@ export class NewTaskComponent implements OnChanges {
   }
 
   addTask() {
-    if (!this.newTaskTitle.trim()) return;
+    // Remove espaços em branco no início e fim do texto
+    const trimmedTitle = this.newTaskTitle.trim();
+    
+    // Verifica se o título está vazio após remover os espaços
+    if (!trimmedTitle) {
+      alert('Por favor, digite um título para a tarefa.');
+      return;
+    }
 
     if (this.editingTodo) {
       // Atualizar tarefa existente
-      this.editingTodo.title = this.newTaskTitle;
+      this.editingTodo.title = trimmedTitle;
       this.todoService.updateTodo(this.editingTodo);
       this.editingTodo = null;
     } else {
       // Criar nova tarefa
       const newTodo: Todo = {
         id: this.todoService.getTodoNewId(),
-        title: this.newTaskTitle,
+        title: trimmedTitle,
         completed: false
       };
       this.todoService.addTodo(newTodo);
