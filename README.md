@@ -27,7 +27,7 @@ Agora, instale todas as dependências necessárias:
     npm install
 Com tudo pronto, inicie o servidor de desenvolvimento com:
 
-    ng serve
+    npx ng serve
 Após isso, a aplicação estará acessível no seu navegador, através do endereço:
 
 http://localhost:4200/
